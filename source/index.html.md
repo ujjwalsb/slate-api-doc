@@ -6,6 +6,7 @@ language_tabs: # must be one of https://github.com/rouge-ruby/rouge/wiki/List-of
   - ruby
   - python
   - javascript
+  - Ful.io tab
 
 toc_footers:
   - <a href='#'>Sign Up for a Developer Key</a>
