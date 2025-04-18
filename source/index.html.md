@@ -1,16 +1,15 @@
 ---
-title: API Reference
+title: Ful.io API Reference
 
 language_tabs: # must be one of https://github.com/rouge-ruby/rouge/wiki/List-of-supported-languages-and-lexers
   - shell
   - ruby
   - python
   - javascript
-  - Ful.io tab
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
+  - <a href='https://ful.io/signup'>Signup to ful.io for an API Key</a>
+  # - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
 
 includes:
   - errors
@@ -21,226 +20,340 @@ code_clipboard: true
 
 meta:
   - name: description
-    content: Documentation for the Kittn API
+    content: Documentation for the Ful.io API
 ---
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Ful.io API! Use our APIs to quickly identify technology stacks behind websites, discover relevant email addresses, and effortlessly manage your account subscription and credits.
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+We provide ready-to-use examples in Shell, Python, JavaScript, and Ruby. Check out the code snippets in the panel to your right, and seamlessly switch languages using the tabs above.
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
+You're all set—let's get started with Ful.io!
+
 
 # Authentication
 
 > To authorize, use this code:
 
 ```ruby
-require 'kittn'
+require "httparty"
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+response = HTTParty.get(
+  "https://api.ful.io/your-endpoint",
+  query: { api_key: "<YOUR_API_KEY>" }
+)
+puts response.body
+
 ```
 
 ```python
-import kittn
+import requests
 
-api = kittn.authorize('meowmeowmeow')
+resp = requests.get(
+    "https://api.ful.io/your-endpoint",
+    params={"api_key": "<YOUR_API_KEY>"}
+)
+print(resp.json())
+
 ```
 
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here" \
-  -H "Authorization: meowmeowmeow"
+
+# Please pass your endpoint correctly.
+curl --location \
+  "https://api.ful.io/your-endpoint?api_key=<YOUR_API_KEY>"
+
 ```
 
 ```javascript
-const kittn = require('kittn');
+// Please pass your endpoint correctly.
+// using axios
+import axios from "axios";
 
-let api = kittn.authorize('meowmeowmeow');
+axios.get("https://api.ful.io/your-endpoint", {
+  params: { api_key: "<YOUR_API_KEY>" }
+})
+.then(res => console.log(res.data));
+
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Make sure to replace `YOUR_API_KEY` with your API key.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+Ful.io uses API keys to allow access to the API. You can view your API key at [dashboard portal - Security](https://ful.io/user/security).
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+Ful.io APIs require your API key as a query parameter in all requests:
 
-`Authorization: meowmeowmeow`
+`?api_key=ThisIsYourAPIKey`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>ThisIsYourAPIKey</code> with your personal API key.
 </aside>
 
-# Kittens
+# Lookups
 
-## Get All Kittens
+## Technology Lookup
 
 ```ruby
-require 'kittn'
+require 'httparty'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
+tech = HTTParty.get(
+  "https://api.ful.io/api/domain-search",
+  query: { api_key: "<YOUR_API_KEY>", domain: "example.com" }
+)
+puts tech.body
 ```
 
 ```python
-import kittn
+import requests
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+resp = requests.get(
+    "https://api.ful.io/api/domain-search",
+    params={"api_key": "<YOUR_API_KEY>", "domain": "example.com"}
+)
+print(resp.json())
 ```
 
 ```shell
-curl "http://example.com/api/kittens" \
-  -H "Authorization: meowmeowmeow"
+
+curl --location \
+  "https://api.ful.io/api/domain-search?api_key=<YOUR_API_KEY>&domain=example.com"
+
 ```
 
 ```javascript
-const kittn = require('kittn');
+const axios = require('axios');
 
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+axios.get('https://api.ful.io/api/domain-search', {
+  params: { api_key: '<YOUR_API_KEY>', domain: 'example.com' }
+})
+.then(res => console.log(res.data));
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+  "domain_name": "example.com",
+  "technologies": [
+    {
+      "category_slug": "Mobile",
+      "category_name": "Mobile",
+      "technologies": [
+        {
+          "name": "Viewport Meta",
+          "description": "This page uses the viewport meta tag which means the content may be optimized for mobile content.",
+          "icon": "Viewport Meta.png",
+          "website": "https://developers.google.com/speed/docs/insights/ConfigureViewport",
+          "technology_slug": "viewport-meta"
+        }
+      ]
+    },
+    {
+      "category_slug": "Documentation",
+      "category_name": "Documentation",
+      "technologies": [
+        {
+          "name": "HTML5 DocType",
+          "description": "A DOCTYPE is a required preamble.",
+          "icon": "HTML5 DocType.png",
+          "website": "https://html.spec.whatwg.org/multipage/syntax.html#the-doctype",
+          "technology_slug": "html5-doctype"
+        }
+      ]
+    }
+  ]
+}
 ```
 
-This endpoint retrieves all kittens.
+This endpoint retrieves all technologies associated with a website name.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET https://api.ful.io/api/domain-search`
 
 ### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter | Description
+--------- | -----------
+api_key | You have to paste the API key which has been assigned to you specifically.
+domain | Enter the name of the website you want to lookup the technologies for.
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+Remember — a list of technology items listed is an authenticated response!
 </aside>
 
-## Get a Specific Kitten
+## Email Lookup
 
 ```ruby
-require 'kittn'
+require 'httparty'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
+email = HTTParty.get(
+  "https://api.ful.io/api/email-search-website",
+  query: { api_key: "<YOUR_API_KEY>", email: "example.com" }
+)
+puts email.body
 ```
 
 ```python
-import kittn
+import requests
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
+resp = requests.get(
+    "https://api.ful.io/api/email-search-website",
+    params={"api_key": "<YOUR_API_KEY>", "email": "example.com"}
+)
+print(resp.json())
 ```
 
 ```shell
-curl "http://example.com/api/kittens/2" \
-  -H "Authorization: meowmeowmeow"
+
+curl --location \
+  "https://api.ful.io/api/email-search-website?api_key=<YOUR_API_KEY>&email=example.com"
+
 ```
 
 ```javascript
-const kittn = require('kittn');
+const axios = require('axios');
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+axios.get('https://api.ful.io/api/email-search-website', {
+  params: { api_key: '<YOUR_API_KEY>', email: 'example.com' }
+})
+.then(res => console.log(res.data));
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "domain": "example.com",
+  "total unique emails found": 2,
+  "total email occurrences": 10,
+  "results_found": [
+    {
+      "Email": "abc@example.com",
+      "URLs": [
+        "https://ful.io/technology/analytics/moat",
+        "https://ful.io/technology/cms/wolf-cms",
+        "https://ful.io/technology/cms/solidpixels",
+        "https://ful.io/technology/analytics/facebook-pixel"
+      ]
+    },
+    {
+      "Email": "xyz@example.com",
+      "URLs": [
+        "https://ful.io/technology/cms/pyrocms",
+        "https://ful.io/technology/cms/flazio",
+        "https://ful.io/technology/cms/indexhibit",
+        "https://ful.io/technology/tag-managers",
+        "https://ful.io/technology/cms/chameleon-system",
+        "https://ful.io/technology/widgets/facebook"
+      ]
+    }
+  ]
 }
 ```
 
-This endpoint retrieves a specific kitten.
+This endpoint retrieves all the emails (along with the source) associated with a website name.
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+<!-- <aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside> -->
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET https://api.ful.io/api/email-search-website`
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the kitten to retrieve
+api_key | You have to paste the API key which has been assigned to you specifically.
+email | Enter the name of the website you want to lookup the emails for.
 
-## Delete a Specific Kitten
+<aside class="success">
+Remember — a list of emails listed is an authenticated response!
+</aside>
+
+# Memberships & Credits
 
 ```ruby
-require 'kittn'
+require 'httparty'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
+subs = HTTParty.get(
+  "https://api.ful.io/user/api/subscription-details",
+  query: { api_key: "<YOUR_API_KEY>" }
+)
+puts subs.body
 ```
 
 ```python
-import kittn
+import requests
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
+resp = requests.get(
+    "https://api.ful.io/user/api/subscription-details",
+    params={"api_key": "<YOUR_API_KEY>"}
+)
+print(resp.json())
 ```
 
 ```shell
-curl "http://example.com/api/kittens/2" \
-  -X DELETE \
-  -H "Authorization: meowmeowmeow"
+
+curl --location \
+  "https://api.ful.io/user/api/subscription-details?api_key=<YOUR_API_KEY>"
+
 ```
 
 ```javascript
-const kittn = require('kittn');
+const axios = require('axios');
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
+axios.get('https://api.ful.io/user/api/subscription-details', {
+  params: { api_key: '<YOUR_API_KEY>' }
+})
+.then(res => console.log(res.data));
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+  "user_membership": {
+    "id": 8,
+    "user": 2,
+    "membership": {
+      "id": 2,
+      "name": "Individual",
+      "credit_limit": 0,
+      "logins": 2,
+      "tech_lookup_credits_limit": 5000,
+      "email_lookup_credits_limit": 5000,
+      "api_credits_limit": 250,
+      "lead_generation_credtis_limit": 5
+    },
+    "membership_id": 2,
+    "membership_name": "Individual",
+    "start_date": "2025-04-08T16:30:16.156305Z",
+    "end_date": "2025-05-08T16:30:16.155893Z",
+    "remaining_credits": 0,
+    "tech_lookup_remaining_credits": 4972,
+    "email_lookup_remaining_credits": 4977,
+    "api_remaining_credits": 240,
+    "lead_generation_remaining_credtis": 1,
+    "is_active": true
+  }
 }
 ```
 
-This endpoint deletes a specific kitten.
+This endpoint retrieves all the subscription details of your account including the remaining & used credits.
 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
+`GET https://api.ful.io/user/api/subscription-details`
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the kitten to delete
+api_key | You have to paste the API key which has been assigned to you specifically.
+
+<aside class="success">
+Remember — a list of emails listed is an authenticated response!
+</aside>
 
